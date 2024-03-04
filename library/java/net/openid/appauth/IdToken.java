@@ -270,7 +270,7 @@ public class IdToken {
 
         // OpenID Connect Core Section 3.1.3.7. rule #9
         // Validates that the current time is before the expiry time.
-        Long nowInSeconds = clock.getCurrentTimeMillis() / MILLIS_PER_SECOND;
+//        Long nowInSeconds = clock.getCurrentTimeMillis() / MILLIS_PER_SECOND;
 //        if (nowInSeconds > this.expiration) {
 //            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
 //                new IdTokenException("ID Token expired"));
@@ -279,11 +279,11 @@ public class IdToken {
         // OpenID Connect Core Section 3.1.3.7. rule #10
         // Validates that the issued at time is not more than +/- 10 minutes on the current
         // time.
-        if (Math.abs(nowInSeconds - this.issuedAt) > TEN_MINUTES_IN_SECONDS) {
-            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-                new IdTokenException("Issued at time is more than 10 minutes "
-                    + "before or after the current time"));
-        }
+//        if (Math.abs(nowInSeconds - this.issuedAt) > TEN_MINUTES_IN_SECONDS) {
+//            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+//                new IdTokenException("Issued at time is more than 10 minutes "
+//                    + "before or after the current time"));
+//        }
 
         // Only relevant for the authorization_code response type
         if (GrantTypeValues.AUTHORIZATION_CODE.equals(tokenRequest.grantType)) {

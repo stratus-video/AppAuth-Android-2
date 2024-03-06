@@ -250,11 +250,11 @@ public class IdToken {
         // OpenID Connect Core Section 3.1.3.7. rule #3 & Section 2 azp Claim
         // Validates that the aud (audience) Claim contains the client ID, or that the azp
         // (authorized party) Claim matches the client ID.
-        String clientId = tokenRequest.clientId;
-        if (!this.audience.contains(clientId) && !clientId.equals(this.authorizedParty)) {
-            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-                new IdTokenException("Audience mismatch"));
-        }
+//        String clientId = tokenRequest.clientId;
+//        if (!this.audience.contains(clientId) && !clientId.equals(this.authorizedParty)) {
+//            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+//                new IdTokenException("Audience mismatch"));
+//        }
 
         // OpenID Connect Core Section 3.1.3.7. rules #4 & #5
         // Not enforced.
@@ -286,15 +286,15 @@ public class IdToken {
 //        }
 
         // Only relevant for the authorization_code response type
-        if (GrantTypeValues.AUTHORIZATION_CODE.equals(tokenRequest.grantType)) {
-            // OpenID Connect Core Section 3.1.3.7. rule #11
-            // Validates the nonce.
-            String expectedNonce = tokenRequest.nonce;
-            if (!TextUtils.equals(this.nonce, expectedNonce)) {
-                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-                    new IdTokenException("Nonce mismatch"));
-            }
-        }
+//        if (GrantTypeValues.AUTHORIZATION_CODE.equals(tokenRequest.grantType)) {
+//            // OpenID Connect Core Section 3.1.3.7. rule #11
+//            // Validates the nonce.
+//            String expectedNonce = tokenRequest.nonce;
+//            if (!TextUtils.equals(this.nonce, expectedNonce)) {
+//                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+//                    new IdTokenException("Nonce mismatch"));
+//            }
+//        }
         // OpenID Connect Core Section 3.1.3.7. rules #12
         // ACR is not directly supported by AppAuth.
 

@@ -217,11 +217,11 @@ public class IdToken {
         // Validates that the issuer in the ID Token matches that of the discovery document.
         AuthorizationServiceDiscovery discoveryDoc = tokenRequest.configuration.discoveryDoc;
         if (discoveryDoc != null) {
-            String expectedIssuer = discoveryDoc.getIssuer();
-            if (!this.issuer.equals(expectedIssuer)) {
-                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-                    new IdTokenException("Issuer mismatch"));
-            }
+//            String expectedIssuer = discoveryDoc.getIssuer();
+//            if (!this.issuer.equals(expectedIssuer)) {
+//                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+//                    new IdTokenException("Issuer mismatch"));
+//            }
 
             // OpenID Connect Core Section 2.
             // The iss value is a case sensitive URL using the https scheme that contains scheme,
@@ -229,10 +229,10 @@ public class IdToken {
             // components.
             Uri issuerUri = Uri.parse(this.issuer);
 
-            if (!skipIssuerHttpsCheck && !issuerUri.getScheme().equals("https")) {
-                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-                    new IdTokenException("Issuer must be an https URL"));
-            }
+//            if (!skipIssuerHttpsCheck && !issuerUri.getScheme().equals("https")) {
+//                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+//                    new IdTokenException("Issuer must be an https URL"));
+//            }
 
             if (TextUtils.isEmpty(issuerUri.getHost())) {
                 throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
@@ -270,20 +270,20 @@ public class IdToken {
 
         // OpenID Connect Core Section 3.1.3.7. rule #9
         // Validates that the current time is before the expiry time.
-//        Long nowInSeconds = clock.getCurrentTimeMillis() / MILLIS_PER_SECOND;
-//        if (nowInSeconds > this.expiration) {
-//            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-//                new IdTokenException("ID Token expired"));
-//        }
+        Long nowInSeconds = clock.getCurrentTimeMillis() / MILLIS_PER_SECOND;
+        if (nowInSeconds > this.expiration) {
+            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+                new IdTokenException("ID Token expired"));
+        }
 
         // OpenID Connect Core Section 3.1.3.7. rule #10
         // Validates that the issued at time is not more than +/- 10 minutes on the current
         // time.
-//        if (Math.abs(nowInSeconds - this.issuedAt) > TEN_MINUTES_IN_SECONDS) {
-//            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-//                new IdTokenException("Issued at time is more than 10 minutes "
-//                    + "before or after the current time"));
-//        }
+        if (Math.abs(nowInSeconds - this.issuedAt) > TEN_MINUTES_IN_SECONDS) {
+            throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+                new IdTokenException("Issued at time is more than 10 minutes "
+                    + "before or after the current time"));
+        }
 
         // Only relevant for the authorization_code response type
         if (GrantTypeValues.AUTHORIZATION_CODE.equals(tokenRequest.grantType)) {

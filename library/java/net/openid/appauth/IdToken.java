@@ -217,11 +217,17 @@ public class IdToken {
         // Validates that the issuer in the ID Token matches that of the discovery document.
         AuthorizationServiceDiscovery discoveryDoc = tokenRequest.configuration.discoveryDoc;
         if (discoveryDoc != null) {
-//            String expectedIssuer = discoveryDoc.getIssuer();
-//            if (!this.issuer.equals(expectedIssuer)) {
-//                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
-//                    new IdTokenException("Issuer mismatch"));
-//            }
+            String expectedIssuer = discoveryDoc.getIssuer();
+
+            String tid = (String) this.additionalClaims.get("tid");
+            if (tid != null && !tid.isEmpty() && expectedIssuer.contains("{tenantid}")) {
+                expectedIssuer = expectedIssuer.replace("{tenantid}", tid);
+            }
+
+            if (!this.issuer.equals(expectedIssuer)) {
+                throw AuthorizationException.fromTemplate(GeneralErrors.ID_TOKEN_VALIDATION_ERROR,
+                    new IdTokenException("Issuer mismatch"));
+            }
 
             // OpenID Connect Core Section 2.
             // The iss value is a case sensitive URL using the https scheme that contains scheme,
